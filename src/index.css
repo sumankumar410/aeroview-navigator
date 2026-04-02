@@ -136,8 +136,35 @@
   animation: shimmer 2s linear infinite;
 }
 
+/* Light mode overrides */
+.light-mode {
+  --background: 210 20% 96%;
+  --foreground: 222 47% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+  --primary: 200 80% 35%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 40% 90%;
+  --secondary-foreground: 222 47% 11%;
+  --muted: 210 30% 92%;
+  --muted-foreground: 215 16% 46%;
+  --accent: 210 40% 90%;
+  --accent-foreground: 222 47% 11%;
+  --border: 214 31% 85%;
+  --input: 214 31% 85%;
+  --ring: 200 80% 35%;
+  --sidebar-background: 0 0% 98%;
+  --sidebar-foreground: 222 47% 20%;
+  --sidebar-primary: 200 80% 35%;
+  --sidebar-accent: 210 30% 94%;
+  --sidebar-accent-foreground: 222 47% 11%;
+  --sidebar-border: 214 31% 88%;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: hsl(222 47% 6%); }
-::-webkit-scrollbar-thumb { background: hsl(220 26% 25%); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(187 94% 43%); }
+::-webkit-scrollbar-track { background: hsl(var(--background)); }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--primary)); }
