@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
-import { Plane, Lock, User, Eye, EyeOff, Shield } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plane, Lock, User, Eye, EyeOff, Shield, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
 
 const RadarBackground = () => (
   <div className="absolute inset-0 overflow-hidden">
-    {/* Grid */}
     <div className="absolute inset-0 opacity-10"
       style={{
         backgroundImage: `linear-gradient(hsl(var(--primary)/0.3) 1px, transparent 1px),
@@ -14,7 +14,6 @@ const RadarBackground = () => (
         backgroundSize: '60px 60px',
       }}
     />
-    {/* Radar center */}
     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
       {[1, 2, 3, 4].map((i) => (
         <div key={i}
@@ -22,15 +21,11 @@ const RadarBackground = () => (
           style={{ width: `${i * 200}px`, height: `${i * 200}px` }}
         />
       ))}
-      {/* Sweep */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] animate-radar">
         <div className="absolute top-0 left-1/2 w-1/2 h-1/2 origin-bottom-left"
-          style={{
-            background: 'conic-gradient(from 0deg, transparent, hsl(187 94% 43% / 0.15) 30deg, transparent 60deg)',
-          }}
+          style={{ background: 'conic-gradient(from 0deg, transparent, hsl(187 94% 43% / 0.15) 30deg, transparent 60deg)' }}
         />
       </div>
-      {/* Blips */}
       {[
         { x: 100, y: -80, delay: 0 },
         { x: -150, y: 60, delay: 1 },
@@ -45,7 +40,6 @@ const RadarBackground = () => (
         />
       ))}
     </div>
-    {/* Moving aircraft silhouettes */}
     {[0, 1, 2].map((i) => (
       <motion.div key={i} className="absolute text-primary/10"
         initial={{ x: '-10%', y: `${20 + i * 30}%` }}
@@ -63,20 +57,36 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useAuth();
+
+  // If already logged in, redirect
+  if (isAuthenticated) {
+    navigate("/dashboard", { replace: true });
+  }
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError("");
+    if (!email.trim() || !password.trim()) {
+      setError("Please enter both username and password.");
+      return;
+    }
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1500));
+    await new Promise(r => setTimeout(r, 1200));
+    const result = login(email, password);
     setLoading(false);
-    navigate("/dashboard");
+    if (result.success) {
+      navigate("/dashboard");
+    } else {
+      setError(result.error || "Login failed");
+    }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center relative bg-background">
       <RadarBackground />
-
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -84,7 +94,6 @@ const LoginPage = () => {
         className="relative z-10 w-full max-w-md mx-4"
       >
         <div className="glass-panel p-8 neon-border">
-          {/* Logo */}
           <div className="flex flex-col items-center mb-8">
             <motion.div
               className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center mb-4 neon-glow"
@@ -97,43 +106,46 @@ const LoginPage = () => {
             <p className="text-muted-foreground text-sm mt-1">Aircraft Maintenance System</p>
           </div>
 
+          {/* Error message */}
+          <AnimatePresence>
+            {error && (
+              <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                className="mb-4 p-3 rounded-lg bg-danger/10 border border-danger/30 flex items-center gap-2 text-danger text-sm"
+              >
+                <AlertCircle size={16} className="flex-shrink-0" />
+                <span>{error}</span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           <form onSubmit={handleLogin} className="space-y-5">
-            {/* Email */}
             <div className="relative group">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <input
-                type="email"
-                placeholder="Admin Email"
+                type="text"
+                placeholder="Username (admin)"
                 value={email}
-                onChange={e => setEmail(e.target.value)}
+                onChange={e => { setEmail(e.target.value); setError(""); }}
                 className="w-full pl-10 pr-4 py-3 bg-muted/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-all"
-                required
               />
             </div>
 
-            {/* Password */}
             <div className="relative group">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground group-focus-within:text-primary transition-colors" />
               <input
                 type={showPassword ? "text" : "password"}
-                placeholder="Password"
+                placeholder="Password (admin123)"
                 value={password}
-                onChange={e => setPassword(e.target.value)}
+                onChange={e => { setPassword(e.target.value); setError(""); }}
                 className="w-full pl-10 pr-10 py-3 bg-muted/50 border border-border/50 rounded-lg text-foreground placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-all"
-                required
               />
               <button type="button" onClick={() => setShowPassword(!showPassword)}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors">
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <label className="flex items-center gap-2 text-muted-foreground cursor-pointer">
-                <input type="checkbox" className="rounded border-border bg-muted accent-primary" />
-                Remember me
-              </label>
-              <a href="#" className="text-primary hover:underline">Forgot password?</a>
             </div>
 
             <Button type="submit" disabled={loading}
@@ -146,9 +158,7 @@ const LoginPage = () => {
                   Authenticating...
                 </motion.div>
               ) : (
-                <span className="flex items-center gap-2">
-                  <Lock size={16} /> Secure Login
-                </span>
+                <span className="flex items-center gap-2"><Lock size={16} /> Secure Login</span>
               )}
             </Button>
           </form>
