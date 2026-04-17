@@ -85,32 +85,8 @@ const ReportsPage = () => {
     reader.readAsDataURL(pendingFile);
   };
 
-  const handleView = (file: typeof files[number]) => {
-    if (!file.dataUrl) {
-      toast.info(`No file data stored for "${file.name}"`);
-      return;
-    }
-    const win = window.open();
-    if (!win) {
-      toast.error("Popup blocked — allow popups to view reports");
-      return;
-    }
-    const isImage = (file.mimeType || "").startsWith("image/");
-    const isPdf = (file.mimeType || "") === "application/pdf";
-    win.document.title = file.title || file.name;
-    if (isImage) {
-      win.document.body.style.margin = "0";
-      win.document.body.style.background = "#0a0e1a";
-      win.document.body.innerHTML = `<img src="${file.dataUrl}" style="display:block;margin:auto;max-width:100%;max-height:100vh" />`;
-    } else if (isPdf) {
-      win.document.body.style.margin = "0";
-      win.document.body.innerHTML = `<iframe src="${file.dataUrl}" style="border:0;width:100vw;height:100vh"></iframe>`;
-    } else {
-      const a = win.document.createElement("a");
-      a.href = file.dataUrl;
-      a.download = file.name;
-      a.click();
-    }
+  const handleView = (file: UploadedFile) => {
+    setViewing(file);
   };
 
   const handleDeleteFile = (id: string) => {
