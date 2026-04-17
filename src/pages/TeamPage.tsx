@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { motion } from "framer-motion";
 import { Camera, GraduationCap, User } from "lucide-react";
 import { useTeamStore, type TeamMember } from "@/hooks/useDataStore";
+import TiltCard from "@/components/TiltCard";
 import { toast } from "sonner";
 
 const initials = (name: string) =>
@@ -10,11 +11,11 @@ const initials = (name: string) =>
 const MemberCard = ({ member, onUpload }: { member: TeamMember; onUpload: (id: string, file: File) => void }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   return (
-    <motion.div
+    <TiltCard max={14}>
+      <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -6 }}
-      className="glass-card group relative overflow-hidden text-center"
+      className="glass-card group relative overflow-hidden text-center neon-border"
     >
       <div className="absolute inset-x-0 -top-20 h-40 bg-gradient-to-b from-primary/20 to-transparent blur-2xl opacity-60 group-hover:opacity-100 transition-opacity pointer-events-none" />
       <div className="relative flex flex-col items-center pt-2">
@@ -51,7 +52,8 @@ const MemberCard = ({ member, onUpload }: { member: TeamMember; onUpload: (id: s
           <GraduationCap size={12} /> {member.institute}
         </p>
       </div>
-    </motion.div>
+      </motion.div>
+    </TiltCard>
   );
 };
 
