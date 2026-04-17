@@ -187,36 +187,41 @@ const ReportsPage = () => {
           {files.map((r, i) => {
             const Icon = typeIcons[r.type] || File;
             return (
-              <motion.div key={r.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.04 }}
-                className="glass-card hover-lift flex items-center gap-4 group"
-              >
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0">
-                  <Icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-foreground truncate">{r.title || r.name}</p>
-                  <p className="text-[11px] text-muted-foreground truncate">{r.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{r.aircraft} · {r.size} · {r.reportDate || r.uploadedAt}</p>
-                  {r.description && <p className="text-[10px] text-muted-foreground truncate mt-0.5">{r.description}</p>}
-                </div>
-                <div className="flex gap-1">
-                  <button className="p-1.5 rounded hover:bg-muted/40 text-muted-foreground hover:text-primary"
-                    onClick={() => handleView(r)} aria-label="View report">
-                    <Eye size={14} />
-                  </button>
-                  <button onClick={() => handleDeleteFile(r.id)}
-                    className="p-1.5 rounded hover:bg-muted/40 text-muted-foreground hover:text-danger" aria-label="Delete report">
-                    <Trash2 size={14} />
-                  </button>
-                </div>
-              </motion.div>
+              <TiltCard key={r.id} max={8}>
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                  onClick={() => handleView(r)}
+                  className="glass-card flex items-center gap-4 group cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 neon-glow">
+                    <Icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-foreground truncate">{r.title || r.name}</p>
+                    <p className="text-[11px] text-muted-foreground truncate">{r.name}</p>
+                    <p className="text-[10px] text-muted-foreground">{r.aircraft} · {r.size} · {r.reportDate || r.uploadedAt}</p>
+                    {r.description && <p className="text-[10px] text-muted-foreground truncate mt-0.5">{r.description}</p>}
+                  </div>
+                  <div className="flex gap-1">
+                    <button className="p-1.5 rounded hover:bg-muted/40 text-muted-foreground hover:text-primary"
+                      onClick={(e) => { e.stopPropagation(); handleView(r); }} aria-label="View report">
+                      <Eye size={14} />
+                    </button>
+                    <button onClick={(e) => { e.stopPropagation(); handleDeleteFile(r.id); }}
+                      className="p-1.5 rounded hover:bg-muted/40 text-muted-foreground hover:text-danger" aria-label="Delete report">
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+                </motion.div>
+              </TiltCard>
             );
           })}
         </div>
       )}
+
+      <ReportViewerModal file={viewing} onClose={() => setViewing(null)} />
     </div>
   );
 };
