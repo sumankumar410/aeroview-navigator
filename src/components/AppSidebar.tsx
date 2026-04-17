@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
-  LayoutDashboard, Plane, Wrench, FileText, Bell, Settings, LogOut, Shield, ChevronLeft, ChevronRight, Sun, Moon,
+  LayoutDashboard, Plane, Wrench, FileText, Bell, Settings, LogOut, Shield, ChevronLeft, ChevronRight, Sun, Moon, Users,
 } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,6 +13,7 @@ const navItems = [
   { title: "Aircraft", path: "/aircraft", icon: Plane },
   { title: "Maintenance", path: "/maintenance", icon: Wrench },
   { title: "Reports", path: "/reports", icon: FileText },
+  { title: "Team", path: "/team", icon: Users },
   { title: "Notifications", path: "/notifications", icon: Bell },
   { title: "Settings", path: "/settings", icon: Settings },
 ];
@@ -41,7 +42,7 @@ const AppSidebar = () => {
         </div>
         {!collapsed && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="overflow-hidden">
-            <h2 className="font-bold text-primary neon-text text-sm">AeroTrack</h2>
+            <h2 className="font-bold text-primary neon-text text-sm">Aero Spark</h2>
             <p className="text-[10px] text-muted-foreground">MRO System v2.0</p>
           </motion.div>
         )}

@@ -34,6 +34,26 @@ export interface UploadedFile {
   size: string;
   aircraft: string;
   uploadedAt: string;
+  title?: string;
+  description?: string;
+  reportDate?: string;
+  dataUrl?: string;
+  mimeType?: string;
+}
+
+export interface TeamMember {
+  id: string;
+  name: string;
+  role: string;
+  institute: string;
+  imageUrl?: string;
+}
+
+export interface TwilioConfig {
+  accountSid: string;
+  authToken: string;
+  fromNumber: string;
+  toNumber: string;
 }
 
 export interface AppNotification {
@@ -269,6 +289,27 @@ export function useNotificationStore() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return { notifications, generateNotifications, markRead, markAllRead, unreadCount };
+}
+
+const seedTeam: TeamMember[] = [
+  { id: "tm-1", name: "Mayank Kumar Jha", role: "B.Tech CSE (3rd Year)", institute: "MIMIT Malout" },
+  { id: "tm-2", name: "Suman Kumar", role: "B.Tech CSE", institute: "MIMIT Malout" },
+  { id: "tm-3", name: "Tarun Kumar", role: "B.Tech CSE", institute: "MIMIT Malout" },
+];
+
+export function useTeamStore() {
+  const [team, setTeam] = useLocalStorage<TeamMember[]>("aerospark_team", seedTeam);
+  const updateMember = useCallback((id: string, data: Partial<TeamMember>) => {
+    setTeam(prev => prev.map(m => m.id === id ? { ...m, ...data } : m));
+  }, [setTeam]);
+  return { team, updateMember };
+}
+
+export function useTwilioConfig() {
+  const [config, setConfig] = useLocalStorage<TwilioConfig>("aerospark_twilio", {
+    accountSid: "", authToken: "", fromNumber: "", toNumber: "",
+  });
+  return { config, setConfig };
 }
 
 export function exportToJSON(data: unknown, filename: string) {
