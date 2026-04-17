@@ -8,6 +8,7 @@ import {
 } from "recharts";
 import { useAircraftStore, useMaintenanceStore } from "@/hooks/useDataStore";
 import SendAlertCard from "@/components/SendAlertCard";
+import Aircraft3D from "@/components/Aircraft3D";
 
 const barData = [
   { month: "Jan", completed: 28, pending: 5 },
@@ -67,9 +68,15 @@ const DashboardPage = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">Mission Control</h1>
-        <p className="text-sm text-muted-foreground">Fleet status overview · Real-time monitoring · {stats.total} aircraft tracked</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="lg:col-span-2 glass-card neon-border overflow-hidden p-0">
+          <Aircraft3D />
+        </div>
+        <div className="glass-card flex flex-col justify-center">
+          <h1 className="text-2xl font-bold text-foreground">Mission Control</h1>
+          <p className="text-sm text-muted-foreground mt-1">Fleet status overview · Real-time monitoring</p>
+          <p className="text-[11px] font-mono text-primary mt-3 uppercase tracking-widest">{stats.total} aircraft tracked · {stats.overdue} alerts</p>
+        </div>
       </div>
 
       <SendAlertCard />
