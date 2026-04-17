@@ -52,7 +52,8 @@ const MemberCard = ({ member, onUpload }: { member: TeamMember; onUpload: (id: s
           <GraduationCap size={12} /> {member.institute}
         </p>
       </div>
-    </motion.div>
+      </motion.div>
+    </TiltCard>
   );
 };
 
