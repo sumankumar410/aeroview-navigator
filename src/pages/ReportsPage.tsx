@@ -33,6 +33,7 @@ const ReportsPage = () => {
   const [pendingFile, setPendingFile] = useState<File | null>(null);
   const [form, setForm] = useState({ title: "", aircraft: "", date: "", description: "" });
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [viewing, setViewing] = useState<UploadedFile | null>(null);
 
   const handleDrag = useCallback((e: React.DragEvent) => {
     e.preventDefault();
