@@ -3,7 +3,9 @@ import { motion } from "framer-motion";
 import { Upload, Eye, Trash2, FileText, Image as ImageIcon, FileSpreadsheet, File, Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useFileStore } from "@/hooks/useDataStore";
+import { useFileStore, type UploadedFile } from "@/hooks/useDataStore";
+import ReportViewerModal from "@/components/ReportViewerModal";
+import TiltCard from "@/components/TiltCard";
 import { toast } from "sonner";
 
 const typeIcons: Record<string, typeof FileText> = { pdf: FileText, image: ImageIcon, spreadsheet: FileSpreadsheet };
