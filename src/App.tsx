@@ -11,6 +11,7 @@ import AircraftPage from "./pages/AircraftPage";
 import MaintenancePage from "./pages/MaintenancePage";
 import ReportsPage from "./pages/ReportsPage";
 import NotificationsPage from "./pages/NotificationsPage";
+import TeamPage from "./pages/TeamPage";
 import SettingsPage from "./pages/SettingsPage";
 import DashboardLayout from "./components/DashboardLayout";
 import NotFound from "./pages/NotFound";
@@ -39,6 +40,7 @@ const App = () => (
                 <Route path="/maintenance" element={<MaintenancePage />} />
                 <Route path="/reports" element={<ReportsPage />} />
                 <Route path="/notifications" element={<NotificationsPage />} />
+                <Route path="/team" element={<TeamPage />} />
                 <Route path="/settings" element={<SettingsPage />} />
               </Route>
               <Route path="*" element={<NotFound />} />
