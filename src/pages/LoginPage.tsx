@@ -102,7 +102,7 @@ const LoginPage = () => {
             >
               <Shield className="w-8 h-8 text-primary" />
             </motion.div>
-            <h1 className="text-2xl font-bold neon-text text-primary">AeroTrack</h1>
+            <h1 className="text-2xl font-bold neon-text text-primary">Aero Spark</h1>
             <p className="text-muted-foreground text-sm mt-1">Aircraft Maintenance System</p>
           </div>
 

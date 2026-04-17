@@ -7,6 +7,7 @@ import {
   PieChart, Pie, Cell, AreaChart, Area,
 } from "recharts";
 import { useAircraftStore, useMaintenanceStore } from "@/hooks/useDataStore";
+import SendAlertCard from "@/components/SendAlertCard";
 
 const barData = [
   { month: "Jan", completed: 28, pending: 5 },
@@ -70,6 +71,8 @@ const DashboardPage = () => {
         <h1 className="text-2xl font-bold text-foreground">Mission Control</h1>
         <p className="text-sm text-muted-foreground">Fleet status overview · Real-time monitoring · {stats.total} aircraft tracked</p>
       </div>
+
+      <SendAlertCard />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {statCards.map((s, i) => (
