@@ -25,6 +25,8 @@ const statusConfig = {
 
 const emptyForm = { registration: "", type: "", model: "", totalHours: 0, lastCheck: "", nextCheck: "" };
 
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
 const AircraftPage = () => {
 const [aircraft, setAircraft] = useState([]);
 
@@ -35,7 +37,7 @@ useEffect(() => {
 
 const fetchAircraft = async () => {
   try {
-    const res = await axios.get("http://localhost:5000/api/aircraft");
+    const res = await axios.get(`${API_URL}/api/aircraft`);
 
     // fix Mongo _id → id
     const data = res.data.map((a) => ({
@@ -112,10 +114,10 @@ const fetchAircraft = async () => {
 
   try {
     if (editingId) {
-      await axios.put(`http://localhost:5000/api/aircraft/${editingId}`, form);
+      await axios.put(`${API_URL}/api/aircraft/${editingId}`, form);
       toast.success(`Aircraft updated`);
     } else {
-      await axios.post("http://localhost:5000/api/aircraft", form);
+      await axios.post(`${API_URL}/api/aircraft`, form);
       toast.success(`Aircraft added`);
     }
 
@@ -130,7 +132,7 @@ const handleDelete = async (id) => {
   try {
     const ac = aircraft.find(a => a.id === id);
 
-    await axios.delete(`http://localhost:5000/api/aircraft/${id}`);
+    await axios.delete(`${API_URL}/api/aircraft/${id}`);
 
     toast.success(`Aircraft ${_optionalChain([ac, 'optionalAccess', _4 => _4.registration]) || ""} deleted`);
     setShowDeleteConfirm(null);
@@ -158,7 +160,7 @@ const handleDelete = async (id) => {
         if (Array.isArray(data)) {
           for (const item of data) {
             if (item.registration && item.type && item.model) {
-              await axios.post("http://localhost:5000/api/aircraft", {
+              await axios.post(`${API_URL}/api/aircraft`, {
                 registration: item.registration,
                 type: item.type,
                 model: item.model,
